@@ -1,0 +1,22 @@
+---
+- name: Clone the repo
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_repo_clone_path }}"    
+
+- name: List all dotfiles  
+  find:
+    path: "{{ dotfiles_repo_clone_path }}"
+    file_type: "file"
+    use_regex: yes
+    patterns: '^\..*'
+    hidden: yes
+  register: dotfiles_find
+
+- name: Link files
+  file:
+    src: "{{ item.path }}"
+    dest: "{{ dotfiles_home_path }}/{{ item.path | basename }}"
+    state: "link"
+    force: yes
+  with_items: "{{ dotfiles_find.files }}"
