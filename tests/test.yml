@@ -1,4 +1,9 @@
 ---
 - hosts: container
+  pre_tasks:
+    - name: Install git
+      package:
+        name: git
+        state: latest
   roles:
     - role-to-test
