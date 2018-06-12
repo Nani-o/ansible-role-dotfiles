@@ -2,3 +2,5 @@
 dotfiles_repo: "https://github.com/Nani-o/dotfiles"
 dotfiles_repo_clone_path: "{{ ansible_user_dir }}/dotfiles"
 dotfiles_home_path: "{{ ansible_user_dir }}"
+dotfiles_excludes:
+  - ".travis.yml"

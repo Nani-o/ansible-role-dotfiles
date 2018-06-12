@@ -43,6 +43,15 @@ Path where the dotfiles will be linked.
 dotfiles_home_path: "{{ ansible_user_dir }}"
 ```
 
+- dotfiles_excludes
+
+A list of filename or regex patterns to exclude from linking into the home folder.
+
+```YAML
+dotfiles_excludes:
+  - .travis.yml
+```
+
 Example Playbook
 ----------------
 
