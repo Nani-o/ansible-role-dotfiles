@@ -1,21 +1,24 @@
 ---
+- getent:
+    database: passwd
+    key: "{{ user }}"
+    split: ":"
+
+- name: Set home folders variable
+  set_fact:
+    home_folder: "{{ getent_passwd[user][4] }}"
+    dotfiles_repo_clone_path: "{{ getent_passwd[user][4] }}/{{ dotfiles_repo_home_subpath }}"
+
 - name:
   block:
-    - name: Get user home folders
-      shell: "echo $HOME"
-      register: home_folder
-      changed_when: false
+    - debug:
+        var: "{{ item }}"
+      loop:
+        - user
+        - dotfiles_repo
+        - dotfiles_repo_clone_path
 
-    - name: Set home folders variable
-      set_fact:
-        home_folder: "{{ home_folder.stdout }}"
-        dotfiles_repo_clone_path: "{{ home_folder.stdout }}/{{ dotfiles_repo_home_subpath }}"
-
-    - name: Clone the dotfiles repo
-      git:
-        repo: "{{ dotfiles_repo }}"
-        dest: "{{ dotfiles_repo_clone_path }}"
-        force: yes
+    - shell: "git -C {{ dotfiles_repo_clone_path }} pull || git clone {{ dotfiles_repo }} {{ dotfiles_repo_clone_path }}"
 
     - name: List the root dotfiles
       find:
