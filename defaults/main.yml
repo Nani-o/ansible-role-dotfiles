@@ -3,3 +3,4 @@ dotfiles_repo: "https://github.com/Nani-o/dotfiles"
 dotfiles_repo_home_subpath: ".dotfiles"
 dotfiles_excludes:
   - ".travis.yml"
+  - ".gitignore"
