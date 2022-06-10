@@ -1,6 +1,6 @@
 ---
 - include_tasks: ohmyzsh.yml
-  loop: "{{ dotfile_users }}"
+  loop: "{{ dotfiles_users }}"
   loop_control:
     loop_var: user
 ...
