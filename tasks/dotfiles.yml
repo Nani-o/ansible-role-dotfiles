@@ -1,13 +1,25 @@
 ---
-- getent:
-    database: passwd
-    key: "{{ user }}"
-    split: ":"
+- block:
+    - shell: "dscacheutil -q user -a name {{ user }} | grep "dir:" | cut -d " " -f 2"
+    register: dscache_output
 
-- name: Set home folders variable
-  set_fact:
-    home_folder: "{{ getent_passwd[user][4] }}"
-    dotfiles_repo_clone_path: "{{ getent_passwd[user][4] }}/{{ dotfiles_repo_home_subpath }}"
+    - name: Set home folders variable
+      set_fact:
+        home_folder: "{{ dscache_output.stdout }}"
+        dotfiles_repo_clone_path: "{{ dscache_output.stdout }}/{{ dotfiles_repo_home_subpath }}
+  when: "ansible_os_family == 'Darwin'"
+
+    - getent:
+        database: passwd
+        key: "{{ user }}"
+        split: ":"
+      when: "ansible_os_family == 'Darwin'"
+
+    - name: Set home folders variable
+      set_fact:
+        home_folder: "{{ getent_passwd[user][4] }}"
+        dotfiles_repo_clone_path: "{{ getent_passwd[user][4] }}/{{ dotfiles_repo_home_subpath }}
+  when: "ansible_os_family != 'Darwin'"
 
 - name:
   block:
