@@ -18,7 +18,7 @@
     - name: Set home folders variable
       set_fact:
         home_folder: "{{ getent_passwd[user][4] }}"
-        dotfiles_repo_clone_path: "{{ getent_passwd[user][4] }}/{{ dotfiles_repo_home_subpath }}
+        dotfiles_repo_clone_path: "{{ getent_passwd[user][4] }}/{{ dotfiles_repo_home_subpath }}"
   when: "ansible_os_family != 'Darwin'"
 
 - name:
