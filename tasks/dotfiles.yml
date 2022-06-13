@@ -9,6 +9,7 @@
         dotfiles_repo_clone_path: "{{ dscache_output.stdout }}/{{ dotfiles_repo_home_subpath }}"
   when: "ansible_os_family == 'Darwin'"
 
+- block:
     - getent:
         database: passwd
         key: "{{ user }}"
